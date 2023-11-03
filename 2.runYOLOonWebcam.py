@@ -11,9 +11,17 @@ while True:
     
     Success, frame = cap.read()
 
-    results = model(frame, show=True)
-    # cv.imshow("webcam", frame)
+    results = model.predict(frame)
+    
+    result = results[0]
+    if result:
+        print(result.boxes[0].cls)
+        print(result.boxes[0].conf)
+        print(result.boxes[0].xywh)
 
+    cv.imshow("webcam", frame)
+    # cv.imshow("webcam", frame)
+    
     key = cv.waitKey(1)
     if key == ord("q"):
         break
