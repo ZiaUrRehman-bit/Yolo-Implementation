@@ -1,14 +1,20 @@
 from ultralytics import YOLO
 import cv2 as cv
 import numpy as np
+import serial
+# from cvzone import SerialModule
 
-cap = cv.VideoCapture(2)
+cap = cv.VideoCapture(0)
 
 # 1. create the model, by giving weights, (nano, medium, large), just type the name, it will download the weights
 # yolov8n.pt "yolo version 8 n means nano version"
 model = YOLO("../YOLO-Weights/yolov8n.pt")
 
 selected_person = None 
+# Define the mapping for servo motor angles based on your physical setup
+# This is just an example, you need to adjust it based on your system
+x_angle_map = np.interp(np.arange(0, 640), [0, 640], [-90, 90])
+y_angle_map = np.interp(np.arange(0, 480), [0, 480], [-90, 90])
 while True:
     
     Success, frame = cap.read()
@@ -58,6 +64,13 @@ while True:
         x, y, w, h = selected_person_cords
         person_crop = frame[y:h, x:w]
         cv.imshow("Selected Person", person_crop)
+
+        # Convert centerX and centerY to angles for servo motors
+        x_angle = int(np.interp(centerX, [0, 640], [-90, 90]))
+        y_angle = int(np.interp(centerY, [0, 480], [-90, 90]))
+
+        print(f"x angel: {x_angle}, y angle: {y_angle}")
+
     key = cv.waitKey(1)
     if key == ord("q"):
         break
