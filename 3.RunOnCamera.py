@@ -27,9 +27,18 @@ while True:
             print("Probability:", conf)
             print("---")
 
-            cv.rectangle(frame, (cords[0], cords[1]), (cords[2], cords[3]), (0,255,0),2)
-            cv.putText(frame, f"Person:{i}", (cords[0], cords[1]+20), cv.FONT_HERSHEY_COMPLEX, 1, (255,0,255), 2)
-            i +=1
+            if class_id == 'person' and conf > 0.70:
+                cv.rectangle(frame, (cords[0], cords[1]), (cords[2], cords[3]), (0,255,0),2)
+                cv.putText(frame, f"Person:{i}", (cords[0], cords[1]+20), cv.FONT_HERSHEY_COMPLEX, 1, (255,0,255), 2)
+                cv.putText(frame, f"Probability:{conf*100}%", (cords[0], cords[1]+45), cv.FONT_HERSHEY_PLAIN, 1, (0,150,200), 2)
+                
+                # finding the center point of each person
+                centerX = int((cords[0]+cords[2])/2)
+                centerY = int((cords[1]+cords[3])/2)
+
+                cv.circle(frame, (centerX, centerY), 10, (0, 255, 255), cv.FILLED)
+
+                i +=1
 
     cv.imshow("webcam", frame)
     # cv.imshow("webcam", frame)
