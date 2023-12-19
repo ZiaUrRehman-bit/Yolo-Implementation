@@ -13,8 +13,8 @@ model = YOLO("../YOLO-Weights/yolov8n.pt")
 selected_person = None 
 # Define the mapping for servo motor angles based on your physical setup
 # This is just an example, you need to adjust it based on your system
-x_angle_map = np.interp(np.arange(0, 640), [0, 640], [-90, 90])
-y_angle_map = np.interp(np.arange(0, 480), [0, 480], [-90, 90])
+x_angle_map = np.interp(np.arange(0, 640), [0, 640], [0, 180])
+y_angle_map = np.interp(np.arange(0, 480), [0, 480], [0, 180])
 while True:
     
     Success, frame = cap.read()
@@ -66,8 +66,8 @@ while True:
         cv.imshow("Selected Person", person_crop)
 
         # Convert centerX and centerY to angles for servo motors
-        x_angle = int(np.interp(centerX, [0, 640], [-90, 90]))
-        y_angle = int(np.interp(centerY, [0, 480], [-90, 90]))
+        x_angle = int(np.interp(centerX, [0, 640], [0, 180]))
+        y_angle = int(np.interp(centerY, [0, 480], [0, 180]))
 
         print(f"x angel: {x_angle}, y angle: {y_angle}")
 
